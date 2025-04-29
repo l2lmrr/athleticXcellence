@@ -1,0 +1,19 @@
+@import 'auth-modal.css';
+.group:hover .group-hover\:block {
+    display: block;
+}
+/* Smooth dropdown transitions */
+.group:hover .group-hover\:block {
+    display: block;
+    animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Cart item hover effect */
+.hover\:bg-gray-50:hover {
+    background-color: #f9fafb;
+}
