@@ -10,7 +10,6 @@
     @include('partials.navbar')
     
     <main class="pt-20 pb-10 px-4 sm:px-6 lg:px-8">
-        {{ $slot }}
     </main>
 </body>
 </html>
