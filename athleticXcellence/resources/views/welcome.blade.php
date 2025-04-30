@@ -8,30 +8,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-black text-white font-sans relative">
-  <nav class="fixed top-0 left-0 w-full flex items-center justify-between px-10 py-4 bg-black/50 z-10">
-    <!-- Logo linking to welcome page -->
-    <a href="{{ route('welcome') }}" class="text-xl font-bold hover:text-gray-400 transition-colors">
-        ATHLETICXCELLENCE
-    </a>
-    
-    <div class="flex space-x-6 text-lg">
-        <a href="{{ route('welcome') }}" class="hover:text-gray-400 transition-colors">Home</a>
-        <a href="#" class="hover:text-gray-400 transition-colors">Services</a>
-        <a href="#" class="hover:text-gray-400 transition-colors">About</a>
-        <a href="#" class="hover:text-gray-400 transition-colors">Prices</a>
-    </div>
-    
-    <div class="flex items-center space-x-4">
-        <!-- Search Bar -->
-        <div class="relative">
-            <input type="text" class="bg-transparent border border-white rounded-full px-4 py-1 text-sm focus:outline-none focus:border-gray-400" placeholder="Search">
-        </div>
-            <!-- Login Button -->
-            <a href="{{ route('login') }}" class="px-4 py-1.5 border border-white rounded-full text-white hover:bg-white hover:text-black transition-colors text-sm">
-                Sign In
-            </a>
-    </div>
-</nav>
+  @include('partials.navbar')
+
     <div class="relative w-full h-screen overflow-hidden">
         <div id="carousel" class="absolute inset-0 w-full h-full">
             <img id="carousel-image" src="{{ asset('storage/HomePgae/image.jpg') }}" alt="Slide" class="w-full h-full object-cover fade-in">
