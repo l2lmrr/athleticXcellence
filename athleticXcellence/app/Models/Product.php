@@ -32,4 +32,9 @@ class Product extends Model
     {
         return asset('storage/'.$this->image_path);
     }
+
+    public function cartItems()
+{
+    return $this->hasMany(CartItem::class);
+}
 }
