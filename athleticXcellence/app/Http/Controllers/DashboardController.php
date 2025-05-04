@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\Order;
 use App\Models\Product;
-use App\Models\Category;
-use Illuminate\Http\Request;
+use App\Models\Order;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
@@ -39,6 +37,11 @@ class DashboardController extends Controller
             ->groupBy('status')
             ->get();
 
-        return view('dashboard.index', compact('stats', 'recentOrders', 'popularProducts', 'orderStatuses'));
+        return view('dashboard.index', compact(
+            'stats',
+            'recentOrders',
+            'popularProducts',
+            'orderStatuses'
+        ));
     }
 }

@@ -32,14 +32,14 @@
                     <div>
                         <h2 class="text-lg font-medium text-gray-900 mb-4">Order Items</h2>
                         <div class="divide-y divide-gray-200">
-                            @foreach($order->items as $item)
+                            @forelse($order->items ?? [] as $item)
                             <div class="py-4 flex justify-between">
                                 <div class="flex items-center">
                                     <div class="h-16 w-16 bg-gray-200 rounded-md overflow-hidden">
-                                        <img src="{{ $item->product->image_url }}" alt="{{ $item->product->name }}" class="h-full w-full object-cover">
+                                        <img src="{{ $item->product->image_url ?? '' }}" alt="{{ $item->product->name ?? 'Product image' }}" class="h-full w-full object-cover">
                                     </div>
                                     <div class="ml-4">
-                                        <h3 class="text-sm font-medium text-gray-900">{{ $item->product->name }}</h3>
+                                        <h3 class="text-sm font-medium text-gray-900">{{ $item->product->name ?? 'Product name' }}</h3>
                                         <p class="text-sm text-gray-500">Qty: {{ $item->quantity }}</p>
                                     </div>
                                 </div>
@@ -47,7 +47,11 @@
                                     <p class="text-sm font-medium text-gray-900">${{ number_format($item->price * $item->quantity, 2) }}</p>
                                 </div>
                             </div>
-                            @endforeach
+                            @empty
+                            <div class="py-4 text-center text-gray-500">
+                                No items found in this order
+                            </div>
+                            @endforelse
                         </div>
                         
                         <div class="border-t border-gray-200 mt-6 pt-6">
@@ -69,12 +73,14 @@
                     <div>
                         <h2 class="text-lg font-medium text-gray-900 mb-4">Shipping Information</h2>
                         <div class="bg-gray-50 p-4 rounded-lg">
-                            <p class="text-sm text-gray-700">{{ $order->shipping_address }}</p>
+                            <p class="text-sm text-gray-700">{{ $order->shipping_address ?? 'No shipping address provided' }}</p>
                         </div>
                         
                         <h2 class="text-lg font-medium text-gray-900 mt-6 mb-4">Payment Method</h2>
                         <div class="bg-gray-50 p-4 rounded-lg">
-                            <p class="text-sm text-gray-700">{{ ucfirst(str_replace('_', ' ', $order->payment_method)) }}</p>
+                            <p class="text-sm text-gray-700">
+                                {{ $order->payment_method ? ucfirst(str_replace('_', ' ', $order->payment_method)) : 'No payment method specified' }}
+                            </p>
                         </div>
                     </div>
                 </div>

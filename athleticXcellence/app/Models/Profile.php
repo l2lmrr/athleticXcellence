@@ -5,31 +5,23 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Order extends Model
+class Profile extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'user_id',
-        'total_amount',
-        'status',
-        'payment_method',
+        'phone',
         'shipping_address',
         'billing_address',
+        'country',
+        'city',
+        'state',
+        'postal_code'
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function items()
-    {
-        return $this->hasMany(OrderItem::class);
-    }
-
-    public function statusHistory()
-    {
-        return $this->hasMany(OrderStatusHistory::class)->latest();
     }
 }

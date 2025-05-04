@@ -1,3 +1,9 @@
+@php
+use App\Models\Product;
+use App\Models\Order;
+use App\Models\User;
+@endphp
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,7 +31,7 @@
                         </a>
                     </li>
                     <li>
-                        {{-- <a href="{{ route('admin.products.index') }}" class="flex items-center p-2 rounded hover:bg-gray-700"> --}}
+                        <a href="{{ route('admin.products.index') }}" class="flex items-center p-2 rounded hover:bg-gray-700">
                             <i class="fas fa-box mr-3"></i> Products
                         </a>
                     </li>
@@ -154,7 +160,7 @@
                                 </div>
                             @endforeach
                             @if($stats['low_stock'] > 3)
-                                {{-- <a href="{{ route('admin.products.index') }}" class="text-sm text-blue-600 hover:text-blue-800"> --}}
+                                <a href="{{ route('admin.products.index') }}" class="text-sm text-blue-600 hover:text-blue-800">
                                     View all {{ $stats['low_stock'] }} low stock items
                                 </a>
                             @endif

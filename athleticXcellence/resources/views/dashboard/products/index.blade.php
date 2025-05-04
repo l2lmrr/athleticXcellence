@@ -9,7 +9,7 @@ use App\Models\User;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Categories | ATHLETICXCELLENCE</title>
+    <title>Products | ATHLETICXCELLENCE</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -65,7 +65,7 @@ use App\Models\User;
         <div class="flex-1 overflow-auto">
             <header class="bg-white shadow-sm p-4">
                 <div class="flex justify-between items-center">
-                    <h2 class="text-xl font-semibold text-gray-800">Categories</h2>
+                    <h2 class="text-xl font-semibold text-gray-800">Products</h2>
                     <div class="flex items-center space-x-4">
                         <div class="relative">
                             <i class="fas fa-bell text-gray-600 cursor-pointer"></i>
@@ -84,9 +84,9 @@ use App\Models\User;
             <main class="p-6">
                 <div class="bg-white shadow rounded-lg p-6">
                     <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-xl font-semibold">Categories</h2>
-                        <a href="{{ route('admin.categories.create') }}" class="px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors">
-                            Add New Category
+                        <h2 class="text-xl font-semibold">Products</h2>
+                        <a href="{{ route('admin.products.create') }}" class="px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors">
+                            Add New Product
                         </a>
                     </div>
 
@@ -94,21 +94,44 @@ use App\Models\User;
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Slug</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Products</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stock</th>
                                     <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
-                                @foreach($categories as $category)
+                                @foreach($products as $product)
                                 <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $category->name }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $category->slug }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $category->products_count }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-10 w-10">
+                                                <img class="h-10 w-10 rounded-md object-cover" src="{{ asset('storage/' . $product->image_path) }}" alt="{{ $product->name }}">
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">{{ $product->name }}</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        {{ $product->category->name }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        ${{ number_format($product->price, 2) }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        @if($product->stock < 5)
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                                {{ $product->stock }}
+                                            </span>
+                                        @else
+                                            {{ $product->stock }}
+                                        @endif
+                                    </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <a href="{{ route('admin.categories.edit', $category) }}" class="text-blue-600 hover:text-blue-900 mr-3">Edit</a>
-                                        <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" class="inline">
+                                        <a href="{{ route('admin.products.edit', $product) }}" class="text-blue-600 hover:text-blue-900 mr-3">Edit</a>
+                                        <form action="{{ route('admin.products.destroy', $product) }}" method="POST" class="inline">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('Are you sure?')">Delete</button>
@@ -121,7 +144,7 @@ use App\Models\User;
                     </div>
 
                     <div class="mt-4">
-                        {{ $categories->links() }}
+                        {{ $products->links() }}
                     </div>
                 </div>
             </main>

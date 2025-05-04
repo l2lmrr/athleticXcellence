@@ -15,8 +15,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role', // Make sure this is included
-        'banned_at' // Add this if you're using banning functionality
+        'role', // Make sure this exists in your users table
     ];
 
     protected $hidden = [
@@ -24,46 +23,40 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-            'banned_at' => 'datetime', // Add this cast
-        ];
-    }
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+        'banned_at' => 'datetime', // This works with your separate migration
+    ];
 
-    // Orders relationship
+    // Relationships
     public function orders()
     {
         return $this->hasMany(Order::class);
     }
 
-    // CartItems relationship
     public function cartItems()
     {
         return $this->hasMany(CartItem::class);
     }
 
-    // Profile relationship
     public function profile()
     {
         return $this->hasOne(Profile::class);
     }
 
-    // Check if user is admin
+    // Helper Methods
     public function isAdmin(): bool
     {
         return $this->role === 'admin';
     }
 
-    // Check if user is banned
     public function isBanned(): bool
     {
         return !is_null($this->banned_at);
     }
 
-    // Role attribute accessor (optional)
+    // Role accessor/mutator
     protected function role(): Attribute
     {
         return new Attribute(
@@ -71,4 +64,12 @@ class User extends Authenticatable
             set: fn ($value) => strtolower($value)
         );
     }
+
+    public function cartTotal()
+{
+    return $this->cartItems()->with('product')->get()
+        ->sum(function($item) {
+            return $item->product->price * $item->quantity;
+        });
+}
 }

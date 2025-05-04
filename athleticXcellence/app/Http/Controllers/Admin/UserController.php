@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -28,12 +29,8 @@ class UserController extends Controller
             'role' => 'required|in:user,admin',
         ]);
 
-        $data = [
-            'name' => $request->name,
-            'email' => $request->email,
-            'role' => $request->role,
-        ];
-
+        $data = $request->only(['name', 'email', 'role']);
+        
         if ($request->filled('password')) {
             $data['password'] = Hash::make($request->password);
         }
@@ -60,7 +57,9 @@ class UserController extends Controller
             return back()->with('error', 'You cannot ban yourself!');
         }
 
-        $user->update(['banned_at' => now()]);
-        return back()->with('success', 'User has been banned!');
+        $user->update(['banned_at' => $user->banned_at ? null : now()]);
+        
+        $action = $user->banned_at ? 'banned' : 'unbanned';
+        return back()->with('success', "User has been $action!");
     }
 }

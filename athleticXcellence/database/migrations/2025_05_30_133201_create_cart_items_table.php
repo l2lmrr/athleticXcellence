@@ -13,6 +13,8 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();
             $table->integer('quantity')->default(1);
+            $table->string('size')->default('M')->after('quantity');
+
             $table->timestamps();
             
             // Ensure each user can only have one cart item per product
@@ -23,5 +25,8 @@ return new class extends Migration
     public function down()
     {
         Schema::dropIfExists('cart_items');
+        Schema::table('cart_items', function (Blueprint $table) {
+            $table->dropColumn('size');
+        });
     }
 };

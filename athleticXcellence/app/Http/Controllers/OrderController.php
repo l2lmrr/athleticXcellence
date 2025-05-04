@@ -3,23 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
-use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class OrderController extends Controller
 {
     public function index()
     {
-        $orders = auth()->user()->orders()->latest()->get();
+        $orders = auth()->user()->orders()->latest()->paginate(10);
         return view('orders.index', compact('orders'));
     }
 
     public function show(Order $order)
     {
-        // Ensure the order belongs to the authenticated user
-        if ($order->user_id !== auth()->id()) {
-            abort(403);
-        }
-
+        $this->authorize('view', $order);
         return view('orders.show', compact('order'));
+    }
+
+    public function receipt(Order $order)
+    {
+        $this->authorize('view', $order);
+        $pdf = PDF::loadView('orders.receipt', compact('order'));
+        return $pdf->download('receipt-order-'.$order->id.'.pdf');
     }
 }
