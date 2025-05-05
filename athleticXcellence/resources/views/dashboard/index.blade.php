@@ -1,9 +1,3 @@
-@php
-use App\Models\Product;
-use App\Models\Order;
-use App\Models\User;
-@endphp
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -48,6 +42,22 @@ use App\Models\User;
                     <li>
                         <a href="{{ route('admin.orders.index') }}" class="flex items-center p-2 rounded hover:bg-gray-700">
                             <i class="fas fa-shopping-cart mr-3"></i> Orders
+                        </a>
+                    </li>
+                    <!-- New Service Links -->
+                    <li>
+                        <a href="{{ route('admin.service-requests') }}" class="flex items-center p-2 rounded hover:bg-gray-700">
+                            <i class="fas fa-laptop-code mr-3"></i> Service Requests
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.design-consultations') }}" class="flex items-center p-2 rounded hover:bg-gray-700">
+                            <i class="fas fa-pencil-ruler mr-3"></i> Design Consultations
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.quote-requests') }}" class="flex items-center p-2 rounded hover:bg-gray-700">
+                            <i class="fas fa-file-invoice-dollar mr-3"></i> Quote Requests
                         </a>
                     </li>
                     <li class="mt-8 pt-4 border-t border-gray-700">
@@ -131,6 +141,43 @@ use App\Models\User;
                     </div>
                 </div>
 
+                <!-- New Service Request Stats -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-indigo-100 text-indigo-600 mr-4">
+                                <i class="fas fa-laptop-code"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-500">Pending Service Requests</p>
+                                <h3 class="text-2xl font-bold">{{ $stats['pending_service_requests'] }}</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-pink-100 text-pink-600 mr-4">
+                                <i class="fas fa-pencil-ruler"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-500">Pending Design Consultations</p>
+                                <h3 class="text-2xl font-bold">{{ $stats['pending_design_consultations'] }}</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-red-100 text-red-600 mr-4">
+                                <i class="fas fa-file-invoice-dollar"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-500">Pending Quote Requests</p>
+                                <h3 class="text-2xl font-bold">{{ $stats['pending_quote_requests'] }}</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Charts and Recent Activity -->
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
                     <!-- Order Status Chart -->
@@ -148,7 +195,7 @@ use App\Models\User;
                             </span>
                         </div>
                         <div class="space-y-4">
-                            @foreach(Product::where('stock', '<', 5)->latest()->take(3)->get() as $product)
+                            @foreach($lowStockProducts as $product)
                                 <div class="flex items-center">
                                     <div class="flex-shrink-0 h-10 w-10 bg-gray-200 rounded-md overflow-hidden mr-3">
                                         <img src="{{ asset('storage/' . $product->image_path) }}" alt="{{ $product->name }}" class="h-full w-full object-cover">
@@ -168,6 +215,77 @@ use App\Models\User;
                     </div>
                 </div>
 
+                <!-- Recent Activity -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                    <!-- Recent Orders -->
+                    <div class="bg-white rounded-lg shadow overflow-hidden">
+                        <div class="p-6 border-b border-gray-200">
+                            <h3 class="text-lg font-semibold">Recent Orders</h3>
+                        </div>
+                        <div class="divide-y divide-gray-200">
+                            @foreach($recentOrders as $order)
+                                <div class="p-4 hover:bg-gray-50">
+                                    <div class="flex justify-between items-center">
+                                        <div>
+                                            <h4 class="font-medium">Order #{{ $order->id }}</h4>
+                                            <p class="text-sm text-gray-500">{{ $order->user->name }} • {{ $order->created_at->format('M d, Y') }}</p>
+                                        </div>
+                                        <div class="text-right">
+                                            <p class="font-medium">${{ number_format($order->total_amount, 2) }}</p>
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
+                                                @if($order->status === 'completed') bg-green-100 text-green-800
+                                                @elseif($order->status === 'pending') bg-yellow-100 text-yellow-800
+                                                @else bg-red-100 text-red-800 @endif">
+                                                {{ ucfirst($order->status) }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                        <div class="p-4 border-t border-gray-200">
+                            <a href="{{ route('admin.orders.index') }}" class="text-sm font-medium text-blue-600 hover:text-blue-800">
+                                View all orders
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Recent Service Requests -->
+                    <div class="bg-white rounded-lg shadow overflow-hidden">
+                        <div class="p-6 border-b border-gray-200">
+                            <h3 class="text-lg font-semibold">Recent Service Requests</h3>
+                        </div>
+                        <div class="divide-y divide-gray-200">
+                            @foreach($recentServiceRequests as $request)
+                                <div class="p-4 hover:bg-gray-50">
+                                    <div class="flex justify-between items-center">
+                                        <div>
+                                            <h4 class="font-medium">{{ $request->first_name }} {{ $request->last_name }}</h4>
+                                            <p class="text-sm text-gray-500">{{ $request->email }} • {{ $request->created_at->format('M d, Y') }}</p>
+                                            <p class="text-xs text-gray-500 mt-1">
+                                                Project: {{ ucfirst(str_replace('-', ' ', $request->project_type)) }}
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
+                                                @if($request->status === 'new') bg-yellow-100 text-yellow-800
+                                                @elseif($request->status === 'completed') bg-green-100 text-green-800
+                                                @else bg-blue-100 text-blue-800 @endif">
+                                                {{ ucfirst(str_replace('_', ' ', $request->status)) }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                        <div class="p-4 border-t border-gray-200">
+                            <a href="{{ route('admin.service-requests') }}" class="text-sm font-medium text-blue-600 hover:text-blue-800">
+                                View all service requests
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Popular Products -->
                 <div class="bg-white rounded-lg shadow p-6 mb-8">
                     <h3 class="text-lg font-semibold mb-4">Most Popular Products</h3>
@@ -181,39 +299,6 @@ use App\Models\User;
                                 <p class="text-xs text-gray-500">{{ $product->total_sold }} sold</p>
                             </div>
                         @endforeach
-                    </div>
-                </div>
-
-                <!-- Recent Orders -->
-                <div class="bg-white rounded-lg shadow overflow-hidden">
-                    <div class="p-6 border-b border-gray-200">
-                        <h3 class="text-lg font-semibold">Recent Orders</h3>
-                    </div>
-                    <div class="divide-y divide-gray-200">
-                        @foreach($recentOrders as $order)
-                            <div class="p-4 hover:bg-gray-50">
-                                <div class="flex justify-between items-center">
-                                    <div>
-                                        <h4 class="font-medium">Order #{{ $order->id }}</h4>
-                                        <p class="text-sm text-gray-500">{{ $order->user->name }} • {{ $order->created_at->format('M d, Y') }}</p>
-                                    </div>
-                                    <div class="text-right">
-                                        <p class="font-medium">${{ number_format($order->total_amount, 2) }}</p>
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
-                                            @if($order->status === 'completed') bg-green-100 text-green-800
-                                            @elseif($order->status === 'pending') bg-yellow-100 text-yellow-800
-                                            @else bg-red-100 text-red-800 @endif">
-                                            {{ ucfirst($order->status) }}
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-                    <div class="p-4 border-t border-gray-200">
-                        <a href="{{ route('admin.orders.index') }}" class="text-sm font-medium text-blue-600 hover:text-blue-800">
-                            View all orders
-                        </a>
                     </div>
                 </div>
             </main>

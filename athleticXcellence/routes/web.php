@@ -36,11 +36,22 @@ Route::get('/request-quote', [ServicesController::class, 'requestQuote'])->name(
 Route::post('/request-quote', [ServicesController::class, 'storeQuoteRequest'])->name('store.request-quote');
 
 // Admin service management routes
+// Admin routes
 Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
+    // Service Requests
     Route::get('/service-requests', [ServicesController::class, 'adminServiceRequests'])->name('admin.service-requests');
+    Route::get('/service-requests/{request}', [ServicesController::class, 'showServiceRequest'])->name('admin.service-requests.show');
+    Route::patch('/service-requests/{request}/status', [ServicesController::class, 'updateServiceRequestStatus'])->name('admin.service-requests.update-status');
+    
+    // Design Consultations
     Route::get('/design-consultations', [ServicesController::class, 'adminDesignConsultations'])->name('admin.design-consultations');
+    Route::get('/design-consultations/{consultation}', [ServicesController::class, 'showDesignConsultation'])->name('admin.design-consultations.show');
+    Route::patch('/design-consultations/{consultation}/status', [ServicesController::class, 'updateDesignConsultationStatus'])->name('admin.design-consultations.update-status');
+    
+    // Quote Requests
     Route::get('/quote-requests', [ServicesController::class, 'adminQuoteRequests'])->name('admin.quote-requests');
-    Route::post('/update-status/{type}/{id}', [ServicesController::class, 'updateStatus'])->name('admin.update-status');
+    Route::get('/quote-requests/{quote}', [ServicesController::class, 'showQuoteRequest'])->name('admin.quote-requests.show');
+    Route::patch('/quote-requests/{quote}/status', [ServicesController::class, 'updateQuoteRequestStatus'])->name('admin.quote-requests.update-status');
 });
 
 // Authentication Routes

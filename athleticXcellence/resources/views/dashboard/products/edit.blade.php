@@ -49,6 +49,21 @@ use App\Models\User;
                             <i class="fas fa-shopping-cart mr-3"></i> Orders
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ route('admin.service-requests') }}" class="flex items-center p-2 rounded bg-gray-700">
+                            <i class="fas fa-laptop-code mr-3"></i> Service Requests
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.design-consultations') }}" class="flex items-center p-2 rounded hover:bg-gray-700">
+                            <i class="fas fa-pencil-ruler mr-3"></i> Design Consultations
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.quote-requests') }}" class="flex items-center p-2 rounded hover:bg-gray-700">
+                            <i class="fas fa-file-invoice-dollar mr-3"></i> Quote Requests
+                        </a>
+                    </li>
                     <li class="mt-8 pt-4 border-t border-gray-700">
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf

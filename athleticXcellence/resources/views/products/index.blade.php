@@ -112,6 +112,7 @@
             </div>
         </div>
     </div>
+    @include('partials.footer')
 
     <script>
         

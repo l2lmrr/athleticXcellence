@@ -31,11 +31,11 @@
                         </a>
                     </li>
                     <li>
-                        <a href="/prices" class="text-lg hover:text-blue-400 transition duration-300 flex items-center justify-center md:justify-start">
+                        <a href="/products" class="text-lg hover:text-blue-400 transition duration-300 flex items-center justify-center md:justify-start">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
-                            Prices
+                            Shop
                         </a>
                     </li>
                 </ul>
@@ -46,33 +46,36 @@
                 <!-- Address 1 -->
                 <div class="flex items-center group">
                     <div class="w-10 h-10 bg-blue-600/30 group-hover:bg-blue-600/50 rounded-full flex items-center justify-center mr-4 transition-all duration-300">
-                        <img src="{{ asset('storage/HomePgae/icons/Location.png') }}" alt="Location" class="w-6 h-6">
+                        <img src="{{ asset('storage/Icons/Location.png') }}" alt="Location" class="w-6 h-6">
                     </div>
-                    <p class="text-lg group-hover:text-blue-400 transition duration-300">Adresse 1</p>
+                    <p class="text-lg group-hover:text-blue-400 transition duration-300"> West Hastings Street, Vancouver, BC, V6E 2E9, Canada 1055 </p>
                 </div>
 
                 <!-- Address 2 -->
                 <div class="flex items-center group">
                     <div class="w-10 h-10 bg-blue-600/30 group-hover:bg-blue-600/50 rounded-full flex items-center justify-center mr-4 transition-all duration-300">
-                        <img src="{{ asset('storage/HomePgae/icons/Location.png') }}" alt="Location" class="w-6 h-6">
+                        <img src="{{ asset('storage/Icons/Location.png') }}" alt="Location" class="w-6 h-6">
                     </div>
-                    <p class="text-lg group-hover:text-blue-400 transition duration-300">Adresse 2</p>
+                    <p class="text-lg group-hover:text-blue-400 transition duration-300">Immeuble Mahaj Riad Center, 4ème étage,
+                        Avenue Al Araar, Hay Riad,
+                        Rabat 10100, Morocco
+                        </p>
                 </div>
 
                 <!-- Email -->
                 <div class="flex items-center group">
                     <div class="w-10 h-10 bg-blue-600/30 group-hover:bg-blue-600/50 rounded-full flex items-center justify-center mr-4 transition-all duration-300">
-                        <img src="{{ asset('storage/HomePgae/icons/Email.png') }}" alt="Email" class="w-6 h-6">
+                        <img src="{{ asset('storage/Icons/Email.png') }}" alt="Email" class="w-6 h-6">
                     </div>
-                    <a href="mailto:exmp@gmail.com" class="text-lg group-hover:text-blue-400 transition duration-300">exmp@gmail.com</a>
+                    <a href="mailto:exmp@gmail.com" class="text-lg group-hover:text-blue-400 transition duration-300"> info@athleticxcellence.com</a>
                 </div>
 
                 <!-- Phone -->
                 <div class="flex items-center group">
                     <div class="w-10 h-10 bg-blue-600/30 group-hover:bg-blue-600/50 rounded-full flex items-center justify-center mr-4 transition-all duration-300">
-                        <img src="{{ asset('storage/HomePgae/icons/Call.png') }}" alt="Phone" class="w-6 h-6">
+                        <img src="{{ asset('storage/Icons/Call.png') }}" alt="Phone" class="w-6 h-6">
                     </div>
-                    <a href="tel:0600000000" class="text-lg group-hover:text-blue-400 transition duration-300">0600000000</a>
+                    <a href="tel:0600000000" class="text-lg group-hover:text-blue-400 transition duration-300">0696409560</a>
                 </div>
             </div>
         </div>

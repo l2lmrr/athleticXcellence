@@ -136,61 +136,18 @@
 
       <!-- Logos grid -->
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-10 items-center justify-center">
-        <img src="{{ asset('storage/Clients/infernal_void.png') }}" alt="Infernal Void" class="w-24 md:w-32 mx-auto transform hover:scale-110 transition duration-500">
-        <img src="{{ asset('storage/Clients/logo2.png') }}" alt="Logo 2" class="w-24 md:w-32 mx-auto transform hover:scale-110 transition duration-500">
-        <img src="{{ asset('storage/Clients/logo3.png') }}" alt="Logo 3" class="w-24 md:w-32 mx-auto transform hover:scale-110 transition duration-500">
-        <img src="{{ asset('storage/Clients/logo4.png') }}" alt="Logo 4" class="w-24 md:w-32 mx-auto transform hover:scale-110 transition duration-500">
-        <img src="{{ asset('storage/Clients/logo5.png') }}" alt="Logo 5" class="w-24 md:w-32 mx-auto transform hover:scale-110 transition duration-500">
-        <img src="{{ asset('storage/Clients/logo6.png') }}" alt="Logo 6" class="w-24 md:w-32 mx-auto transform hover:scale-110 transition duration-500">
+        <img src="{{ asset('storage/Clients/MoveX.png') }}" alt="Infernal Void" class="w-24 md:w-32 mx-auto transform hover:scale-110 transition duration-500">
+        <img src="{{ asset('storage/Clients/1M.webp') }}" alt="Logo 2" class="w-24 md:w-32 mx-auto transform hover:scale-110 transition duration-500">
+        <img src="{{ asset('storage/Clients/ATX.png') }}" alt="Logo 3" class="w-24 md:w-32 mx-auto transform hover:scale-110 transition duration-500">
+        <img src="{{ asset('storage/Clients/FOG.png') }}" alt="Logo 4" class="w-24 md:w-32 mx-auto transform hover:scale-110 transition duration-500">
+        <img src="{{ asset('storage/Clients/move.png') }}" alt="Logo 5" class="w-24 md:w-32 mx-auto transform hover:scale-110 transition duration-500">
+        <img src="{{ asset('storage/Clients/DFN.png') }}" alt="Logo 6" class="w-24 md:w-32 mx-auto transform hover:scale-110 transition duration-500">
       </div>
 
     </div>
   </div>
-  <footer class="bg-cover bg-center text-white" style="background-image: url('{{ asset('storage/HomePgae/bg-portfolio.jpg') }}');">
-    <div class="max-w-7xl mx-auto px-8 py-12 flex flex-col md:flex-row justify-center md:justify-between items-center md:items-start gap-12">
-  
-      <!-- Left Side -->
-      <div class="flex flex-col gap-4 items-center md:items-start text-center md:text-left">
-        <h3 class="text-2xl font-bold mb-4 animate-fadeIn">ATHLETICXCELLENCE</h3>
-        <ul class="flex flex-col gap-2">
-          <li><a href="/home" class="hover:underline transition duration-300">Home</a></li>
-          <li><a href="/services" class="hover:underline transition duration-300">Services</a></li>
-          <li><a href="/portfolio" class="hover:underline transition duration-300">Portfolio</a></li>
-          <li><a href="/prices" class="hover:underline transition duration-300">Prices</a></li>
-        </ul>
-      </div>
-  
-      <!-- Right Side -->
-      <div class="flex flex-col gap-6 items-center md:items-start text-center md:text-left">
-  
-        <!-- Adresse 1 -->
-        <div class="flex items-center gap-3 animate-fadeInUp">
-          <img src="{{ asset('storage/HomePgae/icons/Location.png') }}" alt="Location" class="w-6 h-6">
-          <p class="hover:text-blue-400 transition duration-300">Adresse 1</p>
-        </div>
-  
-        <!-- Adresse 2 -->
-        <div class="flex items-center gap-3 animate-fadeInUp delay-100">
-          <img src="{{ asset('storage/HomePgae/Icons/Location.png') }}" alt="Location" class="w-6 h-6">
-          <p class="hover:text-blue-400 transition duration-300">Adresse 2</p>
-        </div>
-  
-        <!-- Email (clickable) -->
-        <div class="flex items-center gap-3 animate-fadeInUp delay-200">
-          <img src="{{ asset('storage/HomePgae/icons/Email.png') }}" alt="Email" class="w-6 h-6">
-          <a href="mailto:exmp@gmail.com" class="hover:underline hover:text-blue-400 transition duration-300">exmp@gmail.com</a>
-        </div>
-  
-        <!-- Phone (clickable) -->
-        <div class="flex items-center gap-3 animate-fadeInUp delay-300">
-          <img src="{{ asset('storage/HomePgae/icons/Call.png') }}" alt="Phone" class="w-6 h-6">
-          <a href="tel:0600000000" class="hover:text-blue-400 transition duration-300">0600000000</a>
-        </div>
-  
-      </div>
-  
-    </div>
-  </footer>
+  @include('partials.footer')
+
   
 </section>
 

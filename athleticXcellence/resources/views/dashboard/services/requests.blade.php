@@ -1,7 +1,5 @@
 @php
-use App\Models\Product;
-use App\Models\Order;
-use App\Models\User;
+use App\Models\ServiceRequest;
 @endphp
 
 <!DOCTYPE html>
@@ -9,7 +7,7 @@ use App\Models\User;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Users | ATHLETICXCELLENCE</title>
+    <title>Service Requests | ATHLETICXCELLENCE</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -80,7 +78,7 @@ use App\Models\User;
         <div class="flex-1 overflow-auto">
             <header class="bg-white shadow-sm p-4">
                 <div class="flex justify-between items-center">
-                    <h2 class="text-xl font-semibold text-gray-800">Users</h2>
+                    <h2 class="text-xl font-semibold text-gray-800">Service Requests</h2>
                     <div class="flex items-center space-x-4">
                         <div class="relative">
                             <i class="fas fa-bell text-gray-600 cursor-pointer"></i>
@@ -98,51 +96,95 @@ use App\Models\User;
 
             <main class="p-6">
                 <div class="bg-white shadow rounded-lg p-6">
+                    <!-- Filters -->
+                    <div class="mb-6">
+                        <form method="GET" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Status</label>
+                                <select name="status" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
+                                    <option value="">All Statuses</option>
+                                    @foreach($statuses as $status)
+                                        <option value="{{ $status }}" {{ request('status') == $status ? 'selected' : '' }}>
+                                            {{ ucfirst(str_replace('_', ' ', $status)) }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Project Type</label>
+                                <select name="project_type" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
+                                    <option value="">All Types</option>
+                                    @foreach($projectTypes as $type)
+                                        <option value="{{ $type }}" {{ request('project_type') == $type ? 'selected' : '' }}>
+                                            {{ ucfirst(str_replace('-', ' ', $type)) }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">From Date</label>
+                                <input type="date" name="date_from" value="{{ request('date_from') }}" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
+                            </div>
+                            <div class="flex items-end">
+                                <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                                    Filter
+                                </button>
+                                <a href="{{ route('admin.service-requests') }}" class="ml-2 inline-flex items-center px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300">
+                                    Reset
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Requests Table -->
                     <div class="overflow-x-auto">
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contact</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Project Type</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
                                     <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
-                                @foreach($users as $user)
+                                @foreach($requests as $request)
                                 <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $user->name }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $user->email }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-medium text-gray-900">{{ $request->first_name }} {{ $request->last_name }}</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-500">{{ $request->email }}</div>
+                                        <div class="text-sm text-gray-500">{{ $request->phone }}</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900 capitalize">{{ str_replace('-', ' ', $request->project_type) }}</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                            {{ $user->role === 'admin' ? 'bg-purple-100 text-purple-800' : 'bg-green-100 text-green-800' }}">
-                                            {{ ucfirst($user->role) }}
+                                            {{ $request->status == 'new' ? 'bg-yellow-100 text-yellow-800' : 
+                                               ($request->status == 'completed' ? 'bg-green-100 text-green-800' : 
+                                               'bg-blue-100 text-blue-800') }}">
+                                            {{ str_replace('_', ' ', $request->status) }}
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        @if($user->banned_at)
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                                                Banned
-                                            </span>
-                                        @else
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                                Active
-                                            </span>
-                                        @endif
+                                        {{ $request->created_at->format('M d, Y') }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <a href="{{ route('admin.users.edit', $user) }}" class="text-blue-600 hover:text-blue-900 mr-3">Edit</a>
-                                        @if(!$user->banned_at && $user->id !== auth()->id())
-                                            <form action="{{ route('admin.users.ban', $user) }}" method="POST" class="inline">
-                                                @csrf
-                                                <button type="submit" class="text-yellow-600 hover:text-yellow-900 mr-3">Ban</button>
-                                            </form>
-                                        @endif
-                                        <form action="{{ route('admin.users.destroy', $user) }}" method="POST" class="inline">
+                                        <a href="{{ route('admin.service-requests.show', $request) }}" class="text-blue-600 hover:text-blue-900 mr-3">View</a>
+                                        <form action="{{ route('admin.service-requests.update-status', $request) }}" method="POST" class="inline">
                                             @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('Are you sure?')">Delete</button>
+                                            @method('PATCH')
+                                            <select name="status" onchange="this.form.submit()" class="text-sm border-gray-300 focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm">
+                                                @foreach($statuses as $status)
+                                                    <option value="{{ $status }}" {{ $request->status == $status ? 'selected' : '' }}>
+                                                        {{ ucfirst(str_replace('_', ' ', $status)) }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
                                         </form>
                                     </td>
                                 </tr>
@@ -151,8 +193,9 @@ use App\Models\User;
                         </table>
                     </div>
 
+                    <!-- Pagination -->
                     <div class="mt-4">
-                        {{ $users->links() }}
+                        {{ $requests->links() }}
                     </div>
                 </div>
             </main>

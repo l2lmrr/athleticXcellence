@@ -38,58 +38,59 @@
             <div class="bg-black border border-gray-800 rounded-xl p-8">
                 <h2 class="text-2xl font-bold mb-8 text-center">Design Consultation Request</h2>
                 
-                <form class="space-y-6">
+                <form method="POST" action="{{ route('store.design-consultation') }}" class="space-y-6">
+                    @csrf
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label for="first-name" class="block mb-2">First Name</label>
-                            <input type="text" id="first-name" class="form-input w-full px-4 py-3 rounded-lg">
+                            <input type="text" id="first-name" name="first_name" class="form-input w-full px-4 py-3 rounded-lg" required>
                         </div>
                         <div>
                             <label for="last-name" class="block mb-2">Last Name</label>
-                            <input type="text" id="last-name" class="form-input w-full px-4 py-3 rounded-lg">
+                            <input type="text" id="last-name" name="last_name" class="form-input w-full px-4 py-3 rounded-lg" required>
                         </div>
                     </div>
                     
                     <div>
                         <label for="organization" class="block mb-2">Organization/Team</label>
-                        <input type="text" id="organization" class="form-input w-full px-4 py-3 rounded-lg">
+                        <input type="text" id="organization" name="organization" class="form-input w-full px-4 py-3 rounded-lg">
                     </div>
                     
                     <div>
                         <label for="email" class="block mb-2">Email</label>
-                        <input type="email" id="email" class="form-input w-full px-4 py-3 rounded-lg">
+                        <input type="email" id="email" name="email" class="form-input w-full px-4 py-3 rounded-lg" required>
                     </div>
                     
                     <div>
                         <label for="phone" class="block mb-2">Phone Number</label>
-                        <input type="tel" id="phone" class="form-input w-full px-4 py-3 rounded-lg">
+                        <input type="tel" id="phone" name="phone" class="form-input w-full px-4 py-3 rounded-lg" required>
                     </div>
                     
                     <div>
                         <label class="block mb-4">Products Needed</label>
                         <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
                             <label class="flex items-center">
-                                <input type="checkbox" class="mr-2">
+                                <input type="checkbox" name="products_needed[]" value="Jerseys" class="mr-2">
                                 Jerseys
                             </label>
                             <label class="flex items-center">
-                                <input type="checkbox" class="mr-2">
+                                <input type="checkbox" name="products_needed[]" value="T-Shirts" class="mr-2">
                                 T-Shirts
                             </label>
                             <label class="flex items-center">
-                                <input type="checkbox" class="mr-2">
+                                <input type="checkbox" name="products_needed[]" value="Hoodies" class="mr-2">
                                 Hoodies
                             </label>
                             <label class="flex items-center">
-                                <input type="checkbox" class="mr-2">
+                                <input type="checkbox" name="products_needed[]" value="Hats" class="mr-2">
                                 Hats
                             </label>
                             <label class="flex items-center">
-                                <input type="checkbox" class="mr-2">
+                                <input type="checkbox" name="products_needed[]" value="Bags" class="mr-2">
                                 Bags
                             </label>
                             <label class="flex items-center">
-                                <input type="checkbox" class="mr-2">
+                                <input type="checkbox" name="products_needed[]" value="Other" class="mr-2">
                                 Other
                             </label>
                         </div>
@@ -97,12 +98,12 @@
                     
                     <div>
                         <label for="design-details" class="block mb-2">Design Details</label>
-                        <textarea id="design-details" rows="5" class="form-input w-full px-4 py-3 rounded-lg" placeholder="Describe your design needs, colors, themes, etc."></textarea>
+                        <textarea id="design-details" name="design_details" rows="5" class="form-input w-full px-4 py-3 rounded-lg" placeholder="Describe your design needs, colors, themes, etc." required></textarea>
                     </div>
                     
                     <div>
                         <label for="quantity" class="block mb-2">Estimated Quantity</label>
-                        <select id="quantity" class="form-input w-full px-4 py-3 rounded-lg bg-black">
+                        <select id="quantity" name="quantity" class="form-input w-full px-4 py-3 rounded-lg bg-black" required>
                             <option value="">Select quantity range</option>
                             <option value="1-25">1-25 units</option>
                             <option value="26-50">26-50 units</option>
@@ -114,7 +115,12 @@
                     
                     <div>
                         <label for="deadline" class="block mb-2">Project Deadline</label>
-                        <input type="date" id="deadline" class="form-input w-full px-4 py-3 rounded-lg">
+                        <input type="date" 
+                               id="deadline" 
+                               name="deadline" 
+                               class="form-input w-full px-4 py-3 rounded-lg"
+                               min="{{ date('Y-m-d') }}"
+                               onchange="validateDate(this)">
                     </div>
                     
                     <div class="pt-4">
@@ -128,5 +134,19 @@
     </main>
 
     @include('partials.footer')
+
+
+    <script>
+        function validateDate(input) {
+            const selectedDate = new Date(input.value);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            if (selectedDate < today) {
+                alert('Please select a date today or in the future');
+                input.value = '';
+            }
+        }
+        </script>
 </body>
 </html>

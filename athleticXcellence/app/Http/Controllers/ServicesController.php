@@ -25,7 +25,6 @@ class ServicesController extends Controller
         return view('request-quote');
     }
 
-    // Handle form submissions
     public function storeGetStarted(Request $request)
     {
         $validated = $request->validate([
@@ -37,9 +36,9 @@ class ServicesController extends Controller
             'project_details' => 'required|string',
             'budget' => 'nullable|string'
         ]);
-
+    
         ServiceRequest::create($validated);
-
+    
         return redirect()->back()->with('success', 'Your service request has been submitted!');
     }
 
@@ -55,13 +54,13 @@ class ServicesController extends Controller
             'products_needed.*' => 'string',
             'design_details' => 'required|string',
             'quantity' => 'required|string',
-            'deadline' => 'nullable|date'
+            'deadline' => 'nullable|date|after_or_equal:today'
         ]);
-
+    
         $validated['products_needed'] = json_encode($validated['products_needed']);
-
+    
         DesignConsultation::create($validated);
-
+    
         return redirect()->back()->with('success', 'Your design consultation request has been submitted!');
     }
 
@@ -97,20 +96,34 @@ class ServicesController extends Controller
     public function adminServiceRequests()
     {
         $requests = ServiceRequest::orderBy('created_at', 'desc')->paginate(10);
-        return view('admin.service-requests', compact('requests'));
+        
+        return view('dashboard.services.requests', [
+            'requests' => $requests,
+            'statuses' => ['new', 'in_review', 'contacted', 'completed', 'rejected'],
+            'projectTypes' => ['team-website', 'ecommerce', 'athlete-portfolio', 'event-system', 'other']
+        ]);
     }
+
 
     public function adminDesignConsultations()
-    {
-        $consultations = DesignConsultation::orderBy('created_at', 'desc')->paginate(10);
-        return view('admin.design-consultations', compact('consultations'));
-    }
+{
+    $consultations = DesignConsultation::orderBy('created_at', 'desc')->paginate(10);
+    
+    return view('dashboard.services.design-consultations', [
+        'consultations' => $consultations,
+        'statuses' => ['new', 'in_review', 'contacted', 'completed', 'rejected']
+    ]);
+}
 
-    public function adminQuoteRequests()
-    {
-        $quotes = QuoteRequest::orderBy('created_at', 'desc')->paginate(10);
-        return view('admin.quote-requests', compact('quotes'));
-    }
+public function adminQuoteRequests()
+{
+    $quotes = QuoteRequest::orderBy('created_at', 'desc')->paginate(10);
+    
+    return view('dashboard.services.quote-requests', [
+        'quotes' => $quotes,
+        'statuses' => ['new', 'in_review', 'quoted', 'completed', 'rejected']
+    ]);
+}
 
     public function updateStatus(Request $request, $type, $id)
     {
@@ -136,4 +149,61 @@ class ServicesController extends Controller
 
         return back()->with('success', 'Status updated successfully');
     }
+
+    public function showServiceRequest(ServiceRequest $request)
+{
+    return view('dashboard.services.request-show', [
+        'request' => $request,
+        'statuses' => ['new', 'in_review', 'contacted', 'completed', 'rejected']
+    ]);
+}
+
+public function updateServiceRequestStatus(Request $request, ServiceRequest $serviceRequest)
+{
+    $validated = $request->validate([
+        'status' => 'required|in:new,in_review,contacted,completed,rejected'
+    ]);
+    
+    $serviceRequest->update($validated);
+    
+    return back()->with('success', 'Status updated successfully');
+}
+
+public function showDesignConsultation(DesignConsultation $consultation)
+{
+    return view('dashboard.services.design-consultation-show', [
+        'consultation' => $consultation,
+        'statuses' => ['new', 'in_review', 'contacted', 'completed', 'rejected']
+    ]);
+}
+
+public function updateDesignConsultationStatus(Request $request, DesignConsultation $consultation)
+{
+    $validated = $request->validate([
+        'status' => 'required|in:new,in_review,contacted,completed,rejected'
+    ]);
+    
+    $consultation->update($validated);
+    
+    return back()->with('success', 'Status updated successfully');
+}
+
+public function showQuoteRequest(QuoteRequest $quote)
+{
+    return view('dashboard.services.quote-request-show', [
+        'quote' => $quote,
+        'statuses' => ['new', 'in_review', 'quoted', 'completed', 'rejected']
+    ]);
+}
+
+public function updateQuoteRequestStatus(Request $request, QuoteRequest $quote)
+{
+    $validated = $request->validate([
+        'status' => 'required|in:new,in_review,quoted,completed,rejected'
+    ]);
+    
+    $quote->update($validated);
+    
+    return back()->with('success', 'Status updated successfully');
+}
 }

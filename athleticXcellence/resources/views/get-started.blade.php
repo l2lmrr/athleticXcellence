@@ -38,31 +38,32 @@
             <div class="bg-black border border-gray-800 rounded-xl p-8">
                 <h2 class="text-2xl font-bold mb-8 text-center">Web Development Inquiry</h2>
                 
-                <form class="space-y-6">
+                <form method="POST" action="{{ route('store.get-started') }}" class="space-y-6">
+                    @csrf
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label for="first-name" class="block mb-2">First Name</label>
-                            <input type="text" id="first-name" class="form-input w-full px-4 py-3 rounded-lg">
+                            <input type="text" id="first-name" name="first_name" class="form-input w-full px-4 py-3 rounded-lg" required>
                         </div>
                         <div>
                             <label for="last-name" class="block mb-2">Last Name</label>
-                            <input type="text" id="last-name" class="form-input w-full px-4 py-3 rounded-lg">
+                            <input type="text" id="last-name" name="last_name" class="form-input w-full px-4 py-3 rounded-lg" required>
                         </div>
                     </div>
                     
                     <div>
                         <label for="email" class="block mb-2">Email</label>
-                        <input type="email" id="email" class="form-input w-full px-4 py-3 rounded-lg">
+                        <input type="email" id="email" name="email" class="form-input w-full px-4 py-3 rounded-lg" required>
                     </div>
                     
                     <div>
                         <label for="phone" class="block mb-2">Phone Number</label>
-                        <input type="tel" id="phone" class="form-input w-full px-4 py-3 rounded-lg">
+                        <input type="tel" id="phone" name="phone" class="form-input w-full px-4 py-3 rounded-lg" required>
                     </div>
                     
                     <div>
                         <label for="project-type" class="block mb-2">Project Type</label>
-                        <select id="project-type" class="form-input w-full px-4 py-3 rounded-lg bg-black">
+                        <select id="project-type" name="project_type" class="form-input w-full px-4 py-3 rounded-lg bg-black" required>
                             <option value="">Select project type</option>
                             <option value="team-website">Team/Club Website</option>
                             <option value="ecommerce">E-commerce Store</option>
@@ -74,12 +75,12 @@
                     
                     <div>
                         <label for="message" class="block mb-2">Project Details</label>
-                        <textarea id="message" rows="5" class="form-input w-full px-4 py-3 rounded-lg"></textarea>
+                        <textarea id="message" name="project_details" rows="5" class="form-input w-full px-4 py-3 rounded-lg" required></textarea>
                     </div>
                     
                     <div>
                         <label for="budget" class="block mb-2">Estimated Budget</label>
-                        <select id="budget" class="form-input w-full px-4 py-3 rounded-lg bg-black">
+                        <select id="budget" name="budget" class="form-input w-full px-4 py-3 rounded-lg bg-black">
                             <option value="">Select budget range</option>
                             <option value="1k-3k">$1,000 - $3,000</option>
                             <option value="3k-5k">$3,000 - $5,000</option>
